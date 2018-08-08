@@ -4,10 +4,7 @@ namespace App\Controllers;
 use \App\Core\App;
 header('Access-Control-Allow-Origin: *');
 class Authenticate {
-    public function signup()
-    {
-        return view('signup');
-    }
+
 
     public function createuser(){
 
@@ -38,7 +35,6 @@ class Authenticate {
         $password = crypt($password, '$1$rasmusle$') . "\n";
         return $password; 
     }
-
 
     public function logout()
     {

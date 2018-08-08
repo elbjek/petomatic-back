@@ -17,6 +17,25 @@ class QueryBuilder
         $query = $this->pdo->prepare("SELECT * FROM {$table1} LEFT JOIN {$table2} ON {$table1}.{$id1} = {$table2}.{$id2} 
                                     LEFT JOIN {$table3} ON {$table1}.{$id3} = {$table3}.{$id2} 
                                     LEFT JOIN {$table4} ON {$table1}.{$id4} = {$table4}.{$id2}");
+                                 
+        $query->execute();
+
+        if($model) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, $model);
+        } else {
+            return $query->fetchAll(\PDO::FETCH_OBJ);
+        }
+    }
+
+
+    public function getThreeAppointments($table1,$table2, $id1, $id2, $table3, $id3, $table4, $id4, $model = "")
+    {
+        $query = $this->pdo->prepare("SELECT * FROM {$table1} LEFT JOIN {$table2} ON {$table1}.{$id1} = {$table2}.{$id2} 
+                                    LEFT JOIN {$table3} ON {$table1}.{$id3} = {$table3}.{$id2} 
+                                    LEFT JOIN {$table4} ON {$table1}.{$id4} = {$table4}.{$id2}
+                                    ORDER BY appointments.date DESC
+                                    LIMIT 3");
+                                 
         $query->execute();
 
         if($model) {
@@ -34,8 +53,10 @@ class QueryBuilder
             implode(", ", array_keys($payload)),
             ":" . implode(", :", array_keys($payload))
         );
-        $query = $this->pdo->prepare($sql); 
+        // dd($payload);
+        $query = $this->pdo->prepare($sql);
         $query->execute($payload);
+        // dd($query->execute($payload));
     }
     
     public function update($table, $payload)
@@ -53,13 +74,16 @@ class QueryBuilder
         $query->execute();
     }
 
-    public function getOne($table1,$table2, $id1, $id2, $table3, $id3, $table4, $id4, $id, $model = "")
+    public function getOne($table1,$table2, $id1, $id2, $table3, $id3, $table4, $id4, $table5, $id5, $table6,$id6, $table7,$id7, $id, $model = "")
     {
         $query = $this->pdo->prepare("SELECT * FROM {$table1} 
         LEFT JOIN {$table2} ON {$table1}.{$id1} = {$table2}.{$id2} 
         LEFT JOIN {$table3} ON {$table1}.{$id3} = {$table3}.{$id2} 
         LEFT JOIN {$table4} ON {$table1}.{$id4} = {$table4}.{$id2} 
-        WHERE {$table4}.{$id2} = $id ");
+        LEFT JOIN {$table5} ON {$table3}.{$id5} = {$table5}.{$id2} 
+        LEFT JOIN {$table6} ON {$table3}.{$id6} = {$table6}.{$id2} 
+        LEFT JOIN {$table7} ON {$table3}.{$id7} = {$table7}.{$id2} 
+        WHERE {$table4}.{$id2} = $id");
         $query->execute();
         if($model) {
             return $query->fetchAll(\PDO::FETCH_CLASS, $model);
@@ -67,17 +91,7 @@ class QueryBuilder
             return $query->fetchAll(\PDO::FETCH_OBJ);
         }
     }
-    // public function getOne($table1, $id, $model = "")
-    // {
-    //     $query = $this->pdo->prepare("SELECT * FROM {$table} WHERE id='{$id}'");
-    //     // dd($query);
-    //     $query->execute();
-    //     if($model) {
-    //         return $query->fetchAll(\PDO::FETCH_CLASS, $model);
-    //     } else {
-    //         return $query->fetchAll(\PDO::FETCH_OBJ);
-    //     }
-    // }
+
     public function getOneUser($table, $email, $model = "")
     {
         $query = $this->pdo->prepare("SELECT * FROM {$table} WHERE email='{$email}'");
@@ -107,4 +121,6 @@ class QueryBuilder
             return $query->fetchAll(\PDO::FETCH_OBJ);
         }
     }
+
+    
 }
