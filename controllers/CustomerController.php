@@ -37,6 +37,19 @@ class CustomerController
                                                         "customers", "customers_id");
         echo json_encode($customers);
     }
+    public function update ($params)
+    {
+      $data = trim(file_get_contents("php://input"));
+      $decoded = json_decode($data, true);
+      App::get('database')->editClient('customers', $decoded, $params['clientId']);
+    }
 
+    public function delete ()
+    {
+        $data = trim(file_get_contents("php://input"));
+        dd($data);
+        $decoded = json_decode($data, true);
+        App::get('database')->update('customers',$decoded);
+    }
 
 }

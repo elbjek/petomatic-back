@@ -37,4 +37,15 @@ class UsersController
     //     $decoded = json_decode($data, true);
     //     $customers = App::get('database')->addNew('customers', $decoded);
     // }
+    // public function getOneUser($table, $email, $model = "")
+    // {
+    //     $query = $this->pdo->prepare("SELECT * FROM {$table} WHERE email='{$email}'");
+    //     $query->execute();
+
+    //     if($model) {
+    //         return $query->fetch(\PDO::FETCH_CLASS, $model);
+    //     } else {
+    //         return $query->fetch(\PDO::FETCH_OBJ);
+    //     }
+    // }
 

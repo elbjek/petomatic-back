@@ -53,37 +53,23 @@ class QueryBuilder
             implode(", ", array_keys($payload)),
             ":" . implode(", :", array_keys($payload))
         );
-        // dd($payload);
         $query = $this->pdo->prepare($sql);
         $query->execute($payload);
-        // dd($query->execute($payload));
+
     }
     
-    public function update($table, $payload)
-    {
-        $id = $_POST['id'];
-        unset($_POST['id']);
 
-        $variables = "";
-        foreach($_POST as $key =>  $element) {
-             $variables.= $key . "='" . $element . "', ";
-        }
-        $variables = substr($variables, 0, -2);
-        $sql = "UPDATE {$table} SET {$variables} WHERE id = '{$id}'";
-        $query = $this->pdo->prepare($sql);
-        $query->execute();
-    }
 
     public function getOne($table1,$table2, $id1, $id2, $table3, $id3, $table4, $id4, $table5, $id5, $table6,$id6, $table7,$id7, $id, $model = "")
     {
         $query = $this->pdo->prepare("SELECT * FROM {$table1} 
-        LEFT JOIN {$table2} ON {$table1}.{$id1} = {$table2}.{$id2} 
-        LEFT JOIN {$table3} ON {$table1}.{$id3} = {$table3}.{$id2} 
-        LEFT JOIN {$table4} ON {$table1}.{$id4} = {$table4}.{$id2} 
-        LEFT JOIN {$table5} ON {$table3}.{$id5} = {$table5}.{$id2} 
-        LEFT JOIN {$table6} ON {$table3}.{$id6} = {$table6}.{$id2} 
-        LEFT JOIN {$table7} ON {$table3}.{$id7} = {$table7}.{$id2} 
-        WHERE {$table4}.{$id2} = $id");
+                LEFT JOIN {$table2} ON {$table1}.{$id1} = {$table2}.{$id2} 
+                LEFT JOIN {$table3} ON {$table1}.{$id3} = {$table3}.{$id2} 
+                LEFT JOIN {$table4} ON {$table1}.{$id4} = {$table4}.{$id2} 
+                LEFT JOIN {$table5} ON {$table3}.{$id5} = {$table5}.{$id2} 
+                LEFT JOIN {$table6} ON {$table3}.{$id6} = {$table6}.{$id2} 
+                LEFT JOIN {$table7} ON {$table3}.{$id7} = {$table7}.{$id2} 
+                WHERE {$table4}.{$id2} = $id");
         $query->execute();
         if($model) {
             return $query->fetchAll(\PDO::FETCH_CLASS, $model);
@@ -92,21 +78,9 @@ class QueryBuilder
         }
     }
 
-    public function getOneUser($table, $email, $model = "")
+    public function destroy($table, $deleted)
     {
-        $query = $this->pdo->prepare("SELECT * FROM {$table} WHERE email='{$email}'");
-        $query->execute();
-
-        if($model) {
-            return $query->fetch(\PDO::FETCH_CLASS, $model);
-        } else {
-            return $query->fetch(\PDO::FETCH_OBJ);
-        }
-    }
-
-    public function destroy($table, $id)
-    {
-        $query = $this->pdo->prepare("DELETE FROM {$table} WHERE id='{$id}'");
+        $query = $this->pdo->prepare("DELETE FROM {$table} WHERE deleted='{$deleted}'");
         $query->execute();
     }
 
@@ -121,6 +95,23 @@ class QueryBuilder
             return $query->fetchAll(\PDO::FETCH_OBJ);
         }
     }
-
+    public function editClient($table, $payload, $params){
+        $query = $this->pdo->prepare("UPDATE {$table} SET first_name = '{$payload['first_name']}', last_name = '{$payload['last_name']}', address = '{$payload['address']}', city = '{$payload['city']}', state = '{$payload['state']}' WHERE id = $params ");
+        if ($query->execute($payload)){
+          echo json_encode("Successfully updated");
+        }else{
+          echo "<br> Error: Database not updated";
+          var_dump($query->errorInfo());
+        }
+    }
     
+    public function update($table, $payload){
+        $query = $this->pdo->prepare("UPDATE {$table} SET 'deleted' = '{$payload['deleted']}' WHERE id = {$payload['id']} ");
+        if ($query->execute($payload)){
+          echo json_encode("Successfully updated");
+        }else{
+          echo "<br> Error: Database not updated";
+          var_dump($query->errorInfo());
+        }
+    }
 }
