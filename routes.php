@@ -12,11 +12,15 @@ $router->post('customers/delete/{clientId}', 'CustomerController@delete');
 
 
 //PETS 
+
 $router->post('pets/create', 'PetController@addPet');
+$router->post('pets/edit/{clientId}', 'PetController@update');
 $router->get('pets/breed', 'PetController@breed');
 $router->get('pets/sex', 'PetController@sex');
 $router->get('pets/species', 'PetController@species');
+$router->get('pets/{clientId}', 'PetController@onePet');
 $router->get('pets', 'PetController@allPets');
+
 
 
 $router->get('appointments/types', 'AppointmentController@appointmentTypes');

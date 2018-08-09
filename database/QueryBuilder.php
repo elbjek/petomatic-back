@@ -57,8 +57,6 @@ class QueryBuilder
         $query->execute($payload);
 
     }
-    
-
 
     public function getOne($table1,$table2, $id1, $id2, $table3, $id3, $table4, $id4, $table5, $id5, $table6,$id6, $table7,$id7, $id, $model = "")
     {
@@ -77,6 +75,18 @@ class QueryBuilder
             return $query->fetchAll(\PDO::FETCH_OBJ);
         }
     }
+
+    public function getOnePet($params, $model = "")
+    {
+        $query = $this->pdo->prepare("SELECT * FROM pets WHERE pets.id = $params");
+        $query->execute();
+        if($model) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, $model);
+        } else {
+            return $query->fetchAll(\PDO::FETCH_OBJ);
+        }
+    }
+
 
     public function destroy($table, $deleted)
     {
@@ -97,6 +107,15 @@ class QueryBuilder
     }
     public function editClient($table, $payload, $params){
         $query = $this->pdo->prepare("UPDATE {$table} SET first_name = '{$payload['first_name']}', last_name = '{$payload['last_name']}', address = '{$payload['address']}', city = '{$payload['city']}', state = '{$payload['state']}' WHERE id = $params ");
+        if ($query->execute($payload)){
+          echo json_encode("Successfully updated");
+        }else{
+          echo "<br> Error: Database not updated";
+          var_dump($query->errorInfo());
+        }
+    }
+    public function editPet($table, $payload, $params){
+        $query = $this->pdo->prepare("UPDATE {$table} SET name = '{$payload['name']}', sex_id = '{$payload['sex_id']}', species_id = '{$payload['species_id']}', date_of_birth = '{$payload['date_of_birth']}', customers_id = '{$payload['customers_id']}' WHERE id = $params ");
         if ($query->execute($payload)){
           echo json_encode("Successfully updated");
         }else{

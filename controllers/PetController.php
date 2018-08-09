@@ -35,5 +35,16 @@ class PetController
         $pets = App::get('database')->getAll('pets');
         echo json_encode($pets);
     }
+    public function update ($params)
+    {
+      $data = trim(file_get_contents("php://input"));
+      $decoded = json_decode($data, true);
+      App::get('database')->editPet('pets', $decoded, $params);
+    }
+    public function onePet ()
+    {
+        $pet = App::get('database')->getOnePet();
+        echo json_encode($pet);
+    }
 
 }
