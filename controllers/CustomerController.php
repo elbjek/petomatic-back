@@ -20,7 +20,7 @@ class CustomerController
     {
         $customer = App::get('database')->getOne("appointments", "appointment_type", 
         "appointment_type_id", "id", "pets", "pets_id",
-        "customers", "customers_id","breed", "breed_id", "species", "species_id", "sex","sex_id", $params['clientId']);
+        "customers", "customers_id","breed", "breed_id", "species", "species_id", "sex","sex_id", $params);
         echo json_encode($customer);
     }
     // create new customer 
@@ -41,7 +41,7 @@ class CustomerController
     {
       $data = trim(file_get_contents("php://input"));
       $decoded = json_decode($data, true);
-      App::get('database')->editClient('customers', $decoded, $params['clientId']);
+      App::get('database')->editClient('customers', $decoded, $params);
     }
 
     public function delete ()

@@ -16,7 +16,7 @@ $router->post('pets/create', 'PetController@addPet');
 $router->get('pets/breed', 'PetController@breed');
 $router->get('pets/sex', 'PetController@sex');
 $router->get('pets/species', 'PetController@species');
-$router->get('pets/all', 'PetController@allPets');
+$router->get('pets', 'PetController@allPets');
 
 
 $router->get('appointments/types', 'AppointmentController@appointmentTypes');

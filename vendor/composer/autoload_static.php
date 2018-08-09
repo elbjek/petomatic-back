@@ -10,7 +10,6 @@ class ComposerStaticInitc0e7a929780ec1ee0f3024efd98691cf
         'App\\Controllers\\AppointmentController' => __DIR__ . '/../..' . '/controllers/AppointmentController.php',
         'App\\Controllers\\Authenticate' => __DIR__ . '/../..' . '/controllers/Authenticate.php',
         'App\\Controllers\\CustomerController' => __DIR__ . '/../..' . '/controllers/CustomerController.php',
-        'App\\Controllers\\PagesController' => __DIR__ . '/../..' . '/controllers/PagesController.php',
         'App\\Controllers\\PetController' => __DIR__ . '/../..' . '/controllers/PetController.php',
         'App\\Controllers\\UsersController' => __DIR__ . '/../..' . '/controllers/UsersController.php',
         'App\\Core\\App' => __DIR__ . '/../..' . '/core/App.php',
